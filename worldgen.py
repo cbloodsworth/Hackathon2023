@@ -1,32 +1,41 @@
-import math, sys
-from perlin_noise import PerlinNoise
-import pygame
+from enum import Enum
 
-pygame.init()
-width, height = 800, 600
 
-screen_display = pygame.display
-screen_display.set_caption("World Generation")
+class Biome(Enum):
+    DEEP_OCEAN = 9
+    OCEAN = 8
+    BEACH = 7
+    PLAINS = 6
+    FOREST = 2
+    MOUNTAIN = 1
+    TALL_MOUNTAIN = 0
 
-surface = screen_display.set_mode((width, height))
 
-size = 10
-numSquares = 50
-board = pygame.Surface((size * numSquares, size * numSquares))
-board.fill((255, 255, 255))
+biomeMap = {
+    Biome.DEEP_OCEAN: (5, 12, 69),      # deep ocean
+    Biome.OCEAN: (13, 30, 168),          # ocean
+    Biome.BEACH: (222, 204, 155),           # beach
+    Biome.PLAINS: (115, 168, 106),          # plains
+    Biome.FOREST: (37, 74, 31),             # forest
+    Biome.MOUNTAIN: (97, 115, 72),          # mountain
+    Biome.TALL_MOUNTAIN: (200, 232, 211)    # tall mountain
+}
 
-noise = PerlinNoise(octaves=10, seed=69)
+class Terrain:
+    def __init__(self, p: float):
+        """
 
-pic = [[noise([i/numSquares, j/numSquares]) for j in range(numSquares)] for i in range(numSquares)]
+        :param p: Stands for perlin value: Range from 0-1.
+        """
+        self.perlin_val = p
 
-for x in range(0, numSquares, 2):
-    for y in range(0, numSquares, 2):
-        c = 255 * (pic[x][y] * 0.5 + 0.5)
-        pygame.draw.rect(board, (c,c,c), (x*size, y*size, size, size))
+        print(p)
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
+        if   p >= 0.6: self.biome = Biome.DEEP_OCEAN
+        elif p >= 0.55: self.biome = Biome.OCEAN
+        elif p >= 0.5: self.biome = Biome.BEACH
+        elif p >= 0.4: self.biome = Biome.PLAINS
+        elif p >= 0.3: self.biome = Biome.FOREST
+        elif p >= 0.2: self.biome = Biome.MOUNTAIN
+        elif p >= 0.1: self.biome = Biome.TALL_MOUNTAIN
 
-    surface.blit(board, board.get_rect())
-    screen_display.update()
