@@ -14,12 +14,17 @@ grid_height, grid_width = 100, 100
 screen = pygame.display.set_mode(screen_size)
 pygame.display.set_caption("Exploring The Unknown")
 
-background = pygame.Surface(screen_size)
-background.fill(pygame.Color('#000000'))
-manager = pygame_gui.UIManager(screen_size)
+# Main menu screen GUI
+main_background = pygame.Surface(screen_size)
+main_background.fill(pygame.Color('#000000'))
+main_gui = pygame_gui.UIManager(screen_size)
 start_game = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((150, 200), (200, 100)),
                                           text='Begin Your Journey',
-                                          manager=manager)
+                                          manager=main_gui)
+
+# In game GUI
+game_gui = pygame_gui.UIManager(screen_size)
+
 
 game_running = True
 game_begin = False
@@ -35,7 +40,10 @@ while game_running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_running = False
-        manager.process_events(event)
+        if game_begin:
+            game_gui.process_events(event)
+        else:
+            main_gui.process_events(event)
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == start_game:
                 game_begin = True
@@ -64,13 +72,15 @@ while game_running:
         pygame.draw.rect(screen, pygame.Color(255, 0, 0),
                          pygame.Rect((player_x + 0.25) * block_size, (player_y + 0.25) * block_size, block_size / 2,
                                      block_size / 2))
-    manager.update(time_delta)
+
     # GUI
     if game_begin:
-        pass
+        game_gui.update(time_delta)
+
     else:
-        screen.blit(background, (0, 0))
-        manager.draw_ui(screen)
+        main_gui.update(time_delta)
+        screen.blit(main_background, (0, 0))
+        main_gui.draw_ui(screen)
 
     # Draw screen
     pygame.display.update()
