@@ -10,10 +10,10 @@ class Biome(Enum):
     # Convoluted, I know. Maybe we could refactor this -C
 
     # BLANK = 100
-    DEEP_OCEAN = 90
-    OCEAN = 60
-    BEACH = 55
-    PLAINS = 40
+    DEEP_OCEAN = 50
+    OCEAN = 43
+    BEACH = 40
+    PLAINS = 37
     FOREST = 30
     MOUNTAIN = 10
     TALL_MOUNTAIN = 0
