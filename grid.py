@@ -6,10 +6,16 @@ class Grid:
     def __init__(self):
         self.nodes = {}
 
-    def generate_grid(self, length, height):
+    def generate_grid(self, width, height):
+        """
+
+        :param width: Grid width in blocks
+        :param height: Grid height in blocks
+        :return:
+        """
         noise = PerlinNoise(octaves=10, seed=3)
-        pic = [[noise([i / height, j / length]) for j in range(length)] for i in range(height)]
-        for x in range(length):
+        pic = [[noise([i / height, j / width]) for j in range(width)] for i in range(height)]
+        for x in range(width):
             column = {}
             for y in range(height):
                 column[y] = node.Node()
