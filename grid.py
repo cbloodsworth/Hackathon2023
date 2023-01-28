@@ -13,11 +13,10 @@ class Grid:
         :param height: Grid height in blocks
         :return:
         """
-        noise = PerlinNoise(octaves=10, seed=3)
+        noise = PerlinNoise(octaves=12, seed=3)
         pic = [[noise([i / height, j / width]) for j in range(width)] for i in range(height)]
         for x in range(width):
             column = {}
             for y in range(height):
-                column[y] = node.Node()
-                column[y].perlin_val = pic[x][y] * 0.5 + 0.5
+                column[y] = node.Node(pic[x][y] * 0.5 + 0.5)
             self.nodes[x] = column

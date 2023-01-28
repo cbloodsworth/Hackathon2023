@@ -1,5 +1,6 @@
 import pygame
 import pygame_gui
+import worldgen
 import grid as board
 import player as plr
 
@@ -62,8 +63,8 @@ while game_running:
         # Set tile colors
         for x in range(grid_width):
             for y in range(grid_height):
-                color = grid.nodes[x][y].perlin_val * 255
-                pygame.draw.rect(screen, (color, 120, color),
+                color = worldgen.biomeMap[grid.nodes[x][y].terrain.biome]
+                pygame.draw.rect(screen, color,
                                  pygame.Rect(x * block_size, y * block_size, block_size, block_size))
 
         # Player draw
