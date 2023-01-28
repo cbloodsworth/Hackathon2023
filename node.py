@@ -5,3 +5,4 @@ class Node:
         self.terrain = Terrain(p)
         self.enemies = {}
         self.items = {}
+        self.visited: bool

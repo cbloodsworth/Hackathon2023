@@ -8,7 +8,7 @@ pygame.init()
 
 # Board parameters
 screen_size = (500, 500)  # Screen size in pixels
-block_size = 50  # Size of side of the block
+block_size = 5  # Size of side of the block
 grid_height, grid_width = 100, 100
 
 # Screen initialization
@@ -55,7 +55,7 @@ while game_running:
         # Set tile colors
         for x in range(grid_width):
             for y in range(grid_height):
-                color = worldgen.biomeMap[grid.nodes[x][y].terrain.biome]
+                color = worldgen.colorMap[grid.nodes[x][y].terrain.biome]
                 pygame.draw.rect(screen, color,
                                  pygame.Rect(x * block_size, y * block_size, block_size, block_size))
 
