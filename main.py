@@ -170,7 +170,7 @@ while game_running:
         # Player movement
         keys = pygame.key.get_pressed()
 
-        sprint = 2  # Sprint factor. Not sprinting = 1, sprinting = 2
+        sprint = 1  # Sprint factor. Not sprinting = 1, sprinting = 2
 
         if keys[pygame.K_LSHIFT]: sprint = 2
 
@@ -184,6 +184,8 @@ while game_running:
             if has_boat:
                 player_color = 0x964B00
                 sprint = 3
+            else:
+                sprint = 0.5
         elif currentBiome == Biome.OCEAN:
             sprint = 0.8
         elif currentBiome.value & 0x003 == 0x003:
@@ -222,15 +224,21 @@ while game_running:
         for x in range(grid_width):
             for y in range(grid_height):
                 curr = world_grid.nodes[x][y]
-                col = 0x888888 if not curr.visited else worldgen.colorMap[curr.biome]
-                if curr.items: col += 0xF0F000
+                col = worldgen.colorMap[curr.biome]
+                if curr.items: col = 0x00F0F0
+                if not curr.visited:
+                    col = 0x888888
                 pygame.draw.rect(screen, col, pygame.Rect(x*2 + 10, y*2 + 10, 2, 2))
 
         # Player draw
-        player_color = 0x880022 if not has_boat and currentBiome == Biome.DEEP_OCEAN else 0xFF0000
+        if not has_boat:
+            player_color = 0x880022 if currentBiome == Biome.DEEP_OCEAN else 0xFF0000
         pygame.draw.rect(screen, player_color,
                          pygame.Rect(screen_center[0] - block_size / 4, screen_center[1] - block_size / 4,
                                      block_size / 2, block_size / 2))
+
+        pygame.draw.rect(screen, player_color,
+                         pygame.Rect(gridwise_pos[0]*2 + 10, gridwise_pos[1]*2 + 10, 2, 2))
 
     # GUI
     if game_begin:
