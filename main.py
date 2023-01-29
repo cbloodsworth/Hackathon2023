@@ -102,6 +102,8 @@ game_begin = False
 backpack_open = False
 has_boat = False
 while game_running:
+    # Screen black
+    screen.fill(255,255,255)
     # Frame rate
     time_delta = clock.tick(60) / 1000.0
     # Get player position
