@@ -40,10 +40,18 @@ game_screen_ui.buttons["Open Backpack"] = open_backpack_btn
 notification = ui.Textbox(game_font_smaller)
 notification.justify = "top"
 notification.pos = [screen_size[0] * 0.85, screen_size[1] * 0.15]
-notification.size = [200, 50]
+notification.size = [200, 90]
 notification.color = pygame.Color(255, 255, 255, 180)
 game_screen_ui.objects["Notification"] = notification
 
+# Craft boat button
+craft_button = ui.Textbox(game_font_smaller)
+craft_button.justify = "top"
+craft_button.pos = [screen_size[0] * 0.85, screen_size[1] * 0.45]
+craft_button.size = [200, 90]
+craft_button.color = pygame.Color(255, 255, 255, 180)
+craft_button.text = "5 ??? to craft a boat"
+game_screen_ui.buttons["Craft"] = craft_button
 # Backpack UI
 backpack_ui = ui.UI()
 
@@ -82,16 +90,13 @@ start_pos = [0, 0]
 
 player = plr.Player(start_pos)
 
-world_grid.nodes[20][13].items = ["Wood"]
-world_grid.nodes[22][16].items = ["Gold"]
-world_grid.nodes[24][19].items = ["Trash"]
 # Pre game bools
 game_running = True
 game_begin = False
 
 # In game bools
 backpack_open = False
-
+has_boat = False
 while game_running:
     # Frame rate
     time_delta = clock.tick(60) / 1000.0
@@ -102,7 +107,13 @@ while game_running:
     gridwise_pos = [(plr_x + screen_size[0] // 2) // block_size, (plr_y + screen_size[1] // 2) // block_size]
     grid_items = world_grid.nodes[gridwise_pos[0]][gridwise_pos[1]].items
     if len(grid_items) > 0:
-        game_screen_ui.objects["Notification"].text = f"{grid_items[0]} found! Press x to pick up."
+        if grid_items[0] in player.backpack:
+            game_screen_ui.objects["Notification"].text = f"{grid_items[0]} found! Press x to pick up."
+            if not has_boat:
+                game_screen_ui.buttons["Craft"].text = "5 wood to craft a boat"
+        else:
+            game_screen_ui.objects["Notification"].text = f"??? found? Press x to pick up."
+
     else:
         game_screen_ui.objects["Notification"].text = ""
     # Events
@@ -116,12 +127,11 @@ while game_running:
             game_running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_x:
-                if len(grid_items) > 0:
+                if len(grid_items) > 0 and pack_count < 36:
                     deleted = []
                     for item in grid_items:
                         player.backpack.append(item)
                         grid_items.remove(item)
-
 
         if event.type == pygame.MOUSEBUTTONUP:
             mouse_pos = pygame.mouse.get_pos()
@@ -138,6 +148,15 @@ while game_running:
                             else:
                                 u.buttons[key].text = "Open Backpack"
                                 u.buttons[key].color = pygame.Color(0, 255, 0)
+                        if key == "Craft" and not has_boat:
+                            wood_count = 0
+                            for item in player.backpack:
+                                if item == "Wood":
+                                    wood_count += 1
+                                if wood_count == 5:
+                                    has_boat = True
+                                    game_screen_ui.buttons["Craft"].text = "Boat crafted!"
+                                    break
 
     if game_begin:
         # Player movement
@@ -167,9 +186,7 @@ while game_running:
                                  pygame.Rect(center_x - plr_x, + center_y - plr_y, block_size, block_size))
 
         # Player draw
-        pygame.draw.rect(screen, pygame.Color(255, 0, 0),
-                         pygame.Rect(screen_center[0] - block_size / 4, screen_center[1] - block_size / 4,
-                                     block_size / 2, block_size / 2))
+
 
 
     # GUI
