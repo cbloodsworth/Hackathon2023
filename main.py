@@ -90,7 +90,6 @@ while world_grid.nodes[rand_x][rand_y].biome != Biome.DEEP_OCEAN:
     rand_y = random.randint(0, grid_height-1)
 world_grid.nodes[rand_x][rand_y].items.append("Gator")
 
-print(rand_x, rand_y)
 for x in world_grid.nodes:
     for y in world_grid.nodes[x]:
         if world_grid.nodes[x][y].biome == Biome.WOODLAND:
@@ -192,7 +191,7 @@ while game_running:
 
         if currentBiome == Biome.DEEP_OCEAN:
             if has_boat:
-                sprint = 3
+                sprint = 2.5
             else:
                 sprint = 0.5
         elif currentBiome == Biome.OCEAN:
