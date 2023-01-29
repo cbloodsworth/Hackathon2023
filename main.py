@@ -7,10 +7,13 @@ import player as plr
 pygame.init()
 
 # Board parameters
-screen_size = (1000, 650)  # Screen size in pixels
-screen_center = [screen_size[0] // 2, screen_size[1] // 2]
-block_size = 25  # Size of side of the block
+
+
+block_size = 5  # Size of side of the block
+
 grid_height, grid_width = 100, 100
+screen_size = min(grid_height * block_size, 1000), min(grid_width * block_size, 650)  # Screen size in pixels
+screen_center = [screen_size[0] // 2, screen_size[1] // 2]
 
 # Screen initialization
 screen = pygame.display.set_mode(screen_size)
