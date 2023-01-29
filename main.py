@@ -83,6 +83,11 @@ clock = pygame.time.Clock()
 world_grid = board.Grid()
 world_grid.generate_grid(grid_width, grid_height)
 
+for x in world_grid.nodes:
+    for y in world_grid.nodes[x]:
+        if world_grid.nodes[x][y].biome == Biome.WOODLAND:
+            if x % 4 == 0:
+                world_grid.nodes[x][y].items.append("Wood")
 pair_found = False
 
 start_pos = [grid_width * block_size // 2, grid_width * block_size // 2]
