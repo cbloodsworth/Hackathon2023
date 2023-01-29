@@ -203,20 +203,21 @@ while game_running:
                     col += 0x212121
 
                 center_x, center_y = x * block_size, y * block_size
-                pygame.draw.rect(screen, col,
-                                 pygame.Rect(x + 10, y + 10, 1, 1))
+
                 pygame.draw.rect(screen, col,
                                  pygame.Rect(center_x - plr_x, + center_y - plr_y, block_size, block_size))
 
 
+        for x in range(grid_width):
+            for y in range(grid_height):
+                col = 0x888888 if not world_grid.nodes[x][y].visited else worldgen.colorMap[world_grid.nodes[x][y].biome]
+                pygame.draw.rect(screen, col, pygame.Rect(x*2 + 10, y*2 + 10, 2, 2))
 
         # Player draw
         player_color = 0x880022 if currentBiome == Biome.DEEP_OCEAN else 0xFF0000
         pygame.draw.rect(screen, player_color,
                          pygame.Rect(screen_center[0] - block_size / 4, screen_center[1] - block_size / 4,
                                      block_size / 2, block_size / 2))
-
-
 
     # GUI
     if game_begin:
