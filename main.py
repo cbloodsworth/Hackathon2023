@@ -7,7 +7,7 @@ import player as plr
 pygame.init()
 
 # Board parameters
-screen_size = (1250, 750)  # Screen size in pixels
+screen_size = (1000, 650)  # Screen size in pixels
 screen_center = [screen_size[0] // 2, screen_size[1] // 2]
 block_size = 25  # Size of side of the block
 grid_height, grid_width = 100, 100
@@ -68,11 +68,11 @@ while game_running:
         # Set tile position and colors
         for x in range(grid_width):
             for y in range(grid_height):
-                color = worldgen.biomeMap[grid.nodes[x][y].terrain.biome]
+                col = worldgen.colorMap[grid.nodes[x][y].terrain.biome]
                 center_x = (x - grid_width // 2) * block_size + screen_center[0]
                 center_y = (y - grid_height // 2) * block_size + screen_center[1]
-
-                color = worldgen.colorMap[grid.nodes[x][y].terrain.biome]
+                pygame.draw.rect(screen, col,
+                                 pygame.Rect(center_x + plr_x, + center_y + plr_y, block_size, block_size))
 
 
         # Player draw
