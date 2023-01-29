@@ -6,4 +6,4 @@ class Node:
         self.biome = biome(e, m)
         self.enemies = {}
         self.items = {}
-        self.visited: bool
+        self.visited: bool = False

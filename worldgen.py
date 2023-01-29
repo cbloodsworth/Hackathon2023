@@ -7,7 +7,7 @@ from pygame import Color
 # CONSTANTS: CHANGE IF YOU WANT TO MODIFY WORLDGEN
 
 ELEV_OCTAVE = 8  # How large / detailed you want the world. POSITIVE INTEGER, DEFAULT=4
-ELEV_POWER = 2.0  # Higher values give higher peaks, lower valleys. POSITIVE FLOAT, DEFAULT=2.0
+ELEV_POWER = 1.5  # Higher values give higher peaks, lower valleys. POSITIVE FLOAT, DEFAULT=2.0
 
 MOIST_OCTAVE = 4  # Same as above but for moisture.
 MOIST_POWER = 2.0
@@ -15,7 +15,7 @@ MOIST_POWER = 2.0
 POLE = 0.1
 EQUATOR = -0.1
 
-WALKABLE = 16
+WATER = 16
 
 SEED = [randint(0, 999999) for i in range(6)]  # Randomly generated seeds array. Size 6.
 

@@ -11,7 +11,7 @@ def pos_to_grid(pos: tuple[float, float]) -> tuple[int, int]:
 class Player:
     def __init__(self, position):
         self.backpack = {}
-        self.stats = {"health_points": 10, "move_speed": 1}
+        self.stats = {"health_points": 10, "move_speed": 2}
         self.position = position
         self.grid_pos = pos_to_grid(position)
 

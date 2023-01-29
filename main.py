@@ -3,7 +3,7 @@ import better_gui as ui
 import worldgen
 import grid as board
 import player as plr
-from worldgen import WALKABLE
+from worldgen import *
 from math import floor
 from grid import *
 
@@ -77,7 +77,7 @@ world_grid.generate_grid(grid_width, grid_height)
 visited = set()
 pair_found = False
 
-start_pos = [0, 0]
+start_pos = [grid_width * block_size // 2, grid_width * block_size // 2]
 
 player = plr.Player(start_pos)
 
@@ -124,31 +124,57 @@ while game_running:
         # Player movement
         keys = pygame.key.get_pressed()
 
-        sprint = 2  # Sprint factor. Not sprinting = 1, sprinting = 2
+        sprint = 1  # Sprint factor. Not sprinting = 1, sprinting = 2
 
         if keys[pygame.K_LSHIFT]: sprint = 2
 
         # DEBUG
         if keys[pygame.K_SPACE]: print(gridwise_pos)
 
-        if world_grid.nodes[gridwise_pos[0]][gridwise_pos[1]].elevation < WALKABLE:
-            sprint = 0.5
+        currentBiome = biome(world_grid.nodes[gridwise_pos[0]][gridwise_pos[1]].elevation,
+                             world_grid.nodes[gridwise_pos[0]][gridwise_pos[1]].moisture)
 
-        if keys[pygame.K_w]: player.move([0, -2 * sprint])
-        if keys[pygame.K_s]: player.move([0, 2 * sprint])
-        if keys[pygame.K_a]: player.move([-2 * sprint, 0])
-        if keys[pygame.K_d]: player.move([2 * sprint, 0])
+        if currentBiome == Biome.DEEP_OCEAN:
+            sprint = 0.5
+        elif currentBiome == Biome.OCEAN:
+            sprint = 0.8
+        elif currentBiome.value & 0x003 == 0x003:
+            sprint = 1
+
+        if gridwise_pos[1] > 0:
+            if keys[pygame.K_w]: player.move([0, -3 * sprint])
+
+        if gridwise_pos[1] < grid_height - 1:
+            if keys[pygame.K_s]: player.move([0, 3 * sprint])
+
+        if gridwise_pos[0] > 0:
+            if keys[pygame.K_a]: player.move([-3 * sprint, 0])
+
+        if gridwise_pos[0] < grid_width - 1:
+            if keys[pygame.K_d]: player.move([3 * sprint, 0])
 
         # Set tile position and colors
         for x in range(grid_width):
             for y in range(grid_height):
-                col = worldgen.colorMap[world_grid.nodes[x][y].biome]
+                if world_grid.nodes[x][y].visited:
+                    col = worldgen.colorMap[world_grid.nodes[x][y].biome]
+                else:
+                    col = 0x666666
+
+                if abs(x - gridwise_pos[0]) < 5 and abs(y - gridwise_pos[1]) < 5:
+                    world_grid.nodes[x][y].visited = True
+                    col += 0x212121
+
                 center_x, center_y = x * block_size, y * block_size
                 pygame.draw.rect(screen, col,
-                                 pygame.Rect(center_x - plr_x, + center_y - plr_y, block_size, block_size))
+                                 pygame.Rect(center_x - plr_x, center_y - plr_y, block_size, block_size))
+
+                pygame.draw.rect(screen, col,
+                                 pygame.Rect(x*2, y*2, 2, 2))
 
         # Player draw
-        pygame.draw.rect(screen, pygame.Color(255, 0, 0),
+        player_color = 0x880022 if currentBiome == Biome.DEEP_OCEAN else 0xFF0000
+        pygame.draw.rect(screen, player_color,
                          pygame.Rect(screen_center[0] - block_size / 4, screen_center[1] - block_size / 4,
                                      block_size / 2, block_size / 2))
 
