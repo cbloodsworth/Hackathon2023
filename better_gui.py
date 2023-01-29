@@ -18,7 +18,7 @@ class UI:
 class Object:
     def __init__(self):
         self.pos = [0, 0]
-        self.color = pygame.Color(0, 255, 0, 128)
+        self.color = pygame.Color(0, 255, 0, 255)
 
 
 class Box(Object):
@@ -61,3 +61,8 @@ class Textbox(Box):
         bounds_center = (bounds.center[0] - text_width / 2, bounds.center[1] - text_height / 2)
         label = self.font.render(self.text, 1, (0, 0, 0))
         screen.blit(label, bounds_center)
+
+
+class Imgbox(Box):
+    def __init__(self):
+        super().__init__()
