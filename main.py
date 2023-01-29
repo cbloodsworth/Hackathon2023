@@ -214,10 +214,10 @@ while game_running:
         # Set tile position and colors
         for x in range(grid_width):
             for y in range(grid_height):
-                #if world_grid.nodes[x][y].visited:
-                col = worldgen.colorMap[world_grid.nodes[x][y].biome]
-                #else:
-                    #col = 0x666666
+                if world_grid.nodes[x][y].visited:
+                    col = worldgen.colorMap[world_grid.nodes[x][y].biome]
+                else:
+                    col = 0x666666
 
                 if abs(x - gridwise_pos[0]) < 5 and abs(y - gridwise_pos[1]) < 5:
                     world_grid.nodes[x][y].visited = True
