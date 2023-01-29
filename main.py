@@ -7,8 +7,9 @@ import player as plr
 pygame.init()
 
 # Board parameters
-screen_size = (500, 500)  # Screen size in pixels
-block_size = 5  # Size of side of the block
+screen_size = (1250, 750)  # Screen size in pixels
+screen_center = [screen_size[0] // 2, screen_size[1] // 2]
+block_size = 25  # Size of side of the block
 grid_height, grid_width = 100, 100
 
 # Screen initialization
@@ -19,12 +20,15 @@ pygame.display.set_caption("Exploring The Unknown")
 main_background = pygame.Surface(screen_size)
 main_background.fill(pygame.Color('#000000'))
 main_gui = pygame_gui.UIManager(screen_size)
-start_game = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((150, 200), (200, 100)),
-                                          text='Begin Your Journey',
-                                          manager=main_gui)
+start_game_btn = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((150, 200), (200, 100)),
+                                              text='Begin Your Journey',
+                                              manager=main_gui)
 
 # In game GUI
-game_gui = pygame_gui.UIManager(screen_size)
+game_gui = pygame_gui.UIManager(screen_size, 'theme.json')
+start_game = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((400, 50), (75, 75)),
+                                          text='Backpack',
+                                          manager=game_gui)
 
 game_running = True
 game_begin = False
@@ -35,7 +39,9 @@ player = plr.Player([0, 0])
 while game_running:
     # Frame rate
     time_delta = clock.tick(60) / 1000.0
-
+    # Get player position
+    plr_x = player.position[0]
+    plr_y = player.position[1]
     # Quit game
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -45,7 +51,7 @@ while game_running:
         else:
             main_gui.process_events(event)
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
-            if event.ui_element == start_game:
+            if event.ui_element == start_game_btn:
                 game_begin = True
     if game_begin:
         # Player movement
@@ -59,26 +65,24 @@ while game_running:
         if keys[pygame.K_d]:
             player.move([-1, 0])
 
-        # Get player position
-        plr_pos = player.position
-
         # Set tile position and colors
         for x in range(grid_width):
             for y in range(grid_height):
+                color = worldgen.biomeMap[grid.nodes[x][y].terrain.biome]
+                center_x = (x - grid_width // 2) * block_size + screen_center[0]
+                center_y = (y - grid_height // 2) * block_size + screen_center[1]
+
                 color = worldgen.colorMap[grid.nodes[x][y].terrain.biome]
-                pygame.draw.rect(screen, color,
-                                 pygame.Rect(((x - grid_width // 2) * block_size)
-                                             + plr_pos[0], ((y - grid_height // 2) * block_size) - 250 +
-                                             plr_pos[1], block_size, block_size))
+
 
         # Player draw
         pygame.draw.rect(screen, pygame.Color(255, 0, 0),
-                         pygame.Rect(250 - block_size / 4, 250 - block_size / 4, block_size / 2, block_size / 2))
+                         pygame.Rect(screen_center[0] - block_size / 4, screen_center[1] - block_size / 4, block_size / 2, block_size / 2))
 
     # GUI
     if game_begin:
         game_gui.update(time_delta)
-
+        game_gui.draw_ui(screen)
     else:
         main_gui.update(time_delta)
         screen.blit(main_background, (0, 0))
