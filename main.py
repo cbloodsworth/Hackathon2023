@@ -13,7 +13,7 @@ pygame.init()
 block_size = 50  # Size of side of the block
 
 
-grid_height, grid_width = 250, 250
+grid_height, grid_width = 100, 100
 screen_size = min(grid_height * block_size, 1000), min(grid_width * block_size, 650)  # Screen size in pixels
 screen_center = [screen_size[0] // 2, screen_size[1] // 2]
 
@@ -71,14 +71,15 @@ while game_running:
     if game_begin:
         # Player movement
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            player.move([0, 1])
-        if keys[pygame.K_s]:
-            player.move([0, -1])
-        if keys[pygame.K_a]:
-            player.move([1, 0])
-        if keys[pygame.K_d]:
-            player.move([-1, 0])
+
+        sprint = 1  # Sprint factor. Not sprinting = 1, sprinting = 2
+
+        if keys[pygame.K_LSHIFT]: sprint = 2
+
+        if keys[pygame.K_w]: player.move([0, 2 * sprint])
+        if keys[pygame.K_s]: player.move([0, -2 * sprint])
+        if keys[pygame.K_a]: player.move([2 * sprint, 0])
+        if keys[pygame.K_d]: player.move([-2 * sprint, 0])
 
         # Set tile position and colors
         for x in range(grid_width):
