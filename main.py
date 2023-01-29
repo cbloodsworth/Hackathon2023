@@ -83,7 +83,6 @@ clock = pygame.time.Clock()
 world_grid = board.Grid()
 world_grid.generate_grid(grid_width, grid_height)
 
-visited = set()
 pair_found = False
 
 start_pos = [grid_width * block_size // 2, grid_width * block_size // 2]
@@ -199,13 +198,17 @@ while game_running:
                 else:
                     col = 0x666666
 
-                if abs(x - gridwise_pos[0]) < 5 and abs(y - gridwise_pos[1]) < 5:
+                if not world_grid.nodes[x][y].visited and abs(x - gridwise_pos[0]) < 5 and abs(y - gridwise_pos[1]) < 5:
                     world_grid.nodes[x][y].visited = True
                     col += 0x212121
 
                 center_x, center_y = x * block_size, y * block_size
                 pygame.draw.rect(screen, col,
+                                 pygame.Rect(x + 10, y + 10, 1, 1))
+                pygame.draw.rect(screen, col,
                                  pygame.Rect(center_x - plr_x, + center_y - plr_y, block_size, block_size))
+
+
 
         # Player draw
         player_color = 0x880022 if currentBiome == Biome.DEEP_OCEAN else 0xFF0000
