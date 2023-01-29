@@ -1,12 +1,15 @@
 from enum import Enum
 from math import floor
 from random import randint
+from pygame import Color
 
 #### CONSTANTS: CHANGE IF YOU WANT TO MODIFY WORLDGEN
 
-OCTAVE = 4  # How large / detailed you want the world. POSITIVE INTEGER, DEFAULT=4
+ELEV_OCTAVE = 4  # How large / detailed you want the world. POSITIVE INTEGER, DEFAULT=4
 ELEV_POWER = 2.0  # Higher values give higher peaks, lower valleys. POSITIVE FLOAT, DEFAULT=2.0
-MOIST_POWER = 2.0 # Same as above but for moisture.
+
+MOIST_OCTAVE = 4  # Same as above but for moisture.
+MOIST_POWER = 2.0
 
 #SEED = [randint(0, 999999) for i in range(6)]  # Randomly generated seeds array. Size 6.
 SEED = [0,1,2,3,4,5]
@@ -67,21 +70,26 @@ class Biome(Enum):
 
 
 colorMap = {
-    Biome.DEEP_OCEAN: (5, 12, 69),
-    Biome.OCEAN: (13, 30, 168),
-    Biome.BEACH: (222, 204, 155),
-    Biome.PLAINS: (115, 168, 106),
-    Biome.ASHEN: (137, 133, 128),
-    Biome.DRY_DESERT: (162, 159, 120),
-    Biome.TUNDRA: (136, 171, 94),
-    Biome.SNOW: (174, 215, 215),
-    Biome.TEMPERATE_DESERT: (158, 185, 89),
-    Biome.OUTBACK: (137, 116, 90),
-    Biome.TAIGA: (176, 224, 205),
-    Biome.WOODLAND: (74, 110, 68),
-    Biome.JUNGLE: (0, 98, 38),
-    Biome.DESERT: (206, 192, 121),
-    Biome.TROPICAL: (173, 199, 103)
+    Biome.DEEP_OCEAN: 0x50C45,
+    Biome.OCEAN: 0x0D1EA8,
+    Biome.BEACH: 0xDECC9b,
+
+
+    Biome.ASHEN: 0x898580,
+    Biome.DRY_DESERT: 0xA29F78,
+    Biome.TUNDRA: 0xB9D79F,
+    Biome.SNOW: 0xBCD7C4,
+
+    Biome.TEMPERATE_DESERT: 0x9EA959,
+    Biome.OUTBACK: 0x89A45A,
+    Biome.TAIGA: 0x69843A,
+
+    Biome.PLAINS: 0x73A86A,
+    Biome.WOODLAND: 0x4A6E44,
+    Biome.JUNGLE: 0x006226,
+
+    Biome.DESERT: 0xCEC079,
+    Biome.TROPICAL: 0xADC767
 }
 
 

@@ -1,6 +1,6 @@
 import node
 from math import pow
-from worldgen import OCTAVE, SEED, ELEV_POWER
+from worldgen import ELEV_OCTAVE, MOIST_OCTAVE, SEED, ELEV_POWER, MOIST_POWER
 from perlin_noise import PerlinNoise
 
 
@@ -15,13 +15,13 @@ class Grid:
         :param height: Grid height in blocks
         :return:
         """
-        e_noise1 = PerlinNoise(octaves=OCTAVE * 1, seed=SEED[0])
-        e_noise2 = PerlinNoise(octaves=OCTAVE * 2, seed=SEED[1])
-        e_noise3 = PerlinNoise(octaves=OCTAVE * 4, seed=SEED[2])
+        e_noise1 = PerlinNoise(octaves=ELEV_OCTAVE * 1, seed=SEED[0])
+        e_noise2 = PerlinNoise(octaves=ELEV_OCTAVE * 2, seed=SEED[1])
+        e_noise3 = PerlinNoise(octaves=ELEV_OCTAVE * 4, seed=SEED[2])
 
-        m_noise1 = PerlinNoise(octaves=OCTAVE * 1, seed=SEED[3])
-        m_noise2 = PerlinNoise(octaves=OCTAVE * 2, seed=SEED[4])
-        m_noise3 = PerlinNoise(octaves=OCTAVE * 4, seed=SEED[5])
+        m_noise1 = PerlinNoise(octaves=MOIST_OCTAVE * 1, seed=SEED[3])
+        m_noise2 = PerlinNoise(octaves=MOIST_OCTAVE * 2, seed=SEED[4])
+        m_noise3 = PerlinNoise(octaves=MOIST_OCTAVE * 4, seed=SEED[5])
 
         elevation_array = [[0.0 for i in range(width)] for j in range(height)]  # Initializing
         moisture_array = [[0.0 for i in range(width)] for j in range(height)]  # Initializing
@@ -38,7 +38,7 @@ class Grid:
                            0.25 * m_noise3([x / width, y / height]) + 0.5
 
                 elevation = pow(elevation, ELEV_POWER) if elevation > 0 else 0
-                moisture = pow(moisture, ELEV_POWER) if moisture > 0 else 0
+                moisture = pow(moisture, MOIST_POWER) if moisture > 0 else 0
 
                 elevation_array[x][y] = elevation
                 moisture_array[x][y] = moisture
