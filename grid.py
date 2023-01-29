@@ -3,10 +3,19 @@ from math import pow, pi, sin
 from worldgen import ELEV_OCTAVE, MOIST_OCTAVE, SEED, ELEV_POWER, MOIST_POWER, POLE, EQUATOR
 from perlin_noise import PerlinNoise
 
+# Board parameters
+block_size = 25  # Size of side of the block
+grid_height, grid_width = 100, 100
+screen_size = min(grid_height * block_size, 1000), min(grid_width * block_size, 650)  # Screen size in pixels
+screen_center = [screen_size[0] // 2, screen_size[1] // 2]
+
+
 
 class Grid:
     def __init__(self):
         self.nodes = {}
+        self.width = 0
+        self.height = 0
 
     def generate_grid(self, width, height):
         """
@@ -15,6 +24,9 @@ class Grid:
         :param height: Grid height in blocks
         :return:
         """
+        self.width = width
+        self.height = height
+
         e_noise1 = PerlinNoise(octaves=ELEV_OCTAVE * 1, seed=SEED[0])
         e_noise2 = PerlinNoise(octaves=ELEV_OCTAVE * 2, seed=SEED[1])
         e_noise3 = PerlinNoise(octaves=ELEV_OCTAVE * 4, seed=SEED[2])
@@ -45,7 +57,7 @@ class Grid:
                 elevation_array[x][y] = equiv_elevation
                 moisture_array[x][y] = moisture
 
-                column[y] = node.Node(equiv_elevation, moisture)
+                column[y] = node.Node(equiv_elevation * 100, moisture * 100)
 
             self.nodes[x] = column
 
