@@ -4,9 +4,10 @@ import worldgen
 import grid as board
 import player as plr
 from worldgen import *
+import random
 from math import floor
 from grid import *
-
+random.seed()
 pygame.init()
 # Font
 game_font = pygame.font.SysFont("monospace", 20)
@@ -82,6 +83,7 @@ pygame.display.set_caption("Exploring The Unknown")
 clock = pygame.time.Clock()
 world_grid = board.Grid()
 world_grid.generate_grid(grid_width, grid_height)
+
 
 for x in world_grid.nodes:
     for y in world_grid.nodes[x]:
