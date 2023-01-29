@@ -104,7 +104,7 @@ while game_running:
         # Set tile position and colors
         for x in range(grid_width):
             for y in range(grid_height):
-                col = worldgen.colorMap[grid.nodes[x][y].terrain.biome]
+                col = worldgen.colorMap[grid.nodes[x][y].biome]
                 center_x = (x - grid_width // 2) * block_size + screen_center[0]
                 center_y = (y - grid_height // 2) * block_size + screen_center[1]
                 pygame.draw.rect(screen, col,

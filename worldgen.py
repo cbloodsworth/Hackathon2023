@@ -1,53 +1,116 @@
 from enum import Enum
 from math import floor
+from math import pi
+from random import randint
+from pygame import Color
 
-OCTAVE = 8
-SEED = 823749
+#### CONSTANTS: CHANGE IF YOU WANT TO MODIFY WORLDGEN
+
+ELEV_OCTAVE = 8  # How large / detailed you want the world. POSITIVE INTEGER, DEFAULT=4
+ELEV_POWER = 2.0  # Higher values give higher peaks, lower valleys. POSITIVE FLOAT, DEFAULT=2.0
+
+MOIST_OCTAVE = 4  # Same as above but for moisture.
+MOIST_POWER = 2.0
+
+POLE = 0.1
+EQUATOR = -0.1
+
+SEED = [randint(0, 999999) for i in range(6)]  # Randomly generated seeds array. Size 6.
+
+## END CONSTANTS
+def biome(elevation: float, moisture: float):
+    elevation *= 100
+    moisture *= 100
+
+    if elevation < 10: return Biome.DEEP_OCEAN
+    if elevation < 16: return Biome.OCEAN
+    if elevation < 20: return Biome.BEACH
+
+    if elevation > 80:
+        if moisture < 10: return Biome.ASHEN
+        if moisture < 20: return Biome.DRY_DESERT
+        if moisture < 50: return Biome.TUNDRA
+        return Biome.SNOW
+
+    if elevation > 60:
+        if moisture < 33: return Biome.TEMPERATE_DESERT
+        if moisture < 66: return Biome.OUTBACK
+        return Biome.TAIGA
+
+    if elevation > 40:
+        if moisture < 16: return Biome.TEMPERATE_DESERT
+        if moisture < 66: return Biome.PLAINS
+        if moisture < 85: return Biome.WOODLAND
+        return Biome.JUNGLE
+
+    if elevation > 20:
+        if moisture < 16: return Biome.DESERT
+        if moisture < 33: return Biome.PLAINS
+        return Biome.TROPICAL
 
 
 class Biome(Enum):
-    # The difference between the first and next enum on this list determines how common the next will be.
-    # Convoluted, I know. Maybe we could refactor this -C
+    # Hex-codes correspond to each biome and are used in the code for maps etc
+    DEEP_OCEAN = 0x100
+    OCEAN = 0x200
+    BEACH = 0x300
 
-    # BLANK = 100
-    DEEP_OCEAN = 50
-    OCEAN = 43
-    BEACH = 40
-    PLAINS = 37
-    FOREST = 30
-    MOUNTAIN = 10
-    TALL_MOUNTAIN = 0
+    ASHEN = 0x003
+    DRY_DESERT = 0x013
+    TUNDRA = 0x023
+    SNOW = 0x033
+
+    TEMPERATE_DESERT = 0x012
+    OUTBACK = 0x022
+    TAIGA = 0x032
+
+    PLAINS = 0x011
+    WOODLAND = 0x021
+    JUNGLE = 0x031
+
+    DESERT = 0x010
+    TROPICAL = 0x020
 
 
 colorMap = {
-    Biome.DEEP_OCEAN.value: (5, 12, 69),      # deep ocean
-    Biome.OCEAN.value: (13, 30, 168),          # ocean
-    Biome.BEACH.value: (222, 204, 155),           # beach
-    Biome.PLAINS.value: (115, 168, 106),          # plains
-    Biome.FOREST.value: (74, 110, 68),             # forest
-    Biome.MOUNTAIN.value: (79, 117, 92),          # mountain
-    Biome.TALL_MOUNTAIN.value: (200, 232, 211)    # tall mountain
+    Biome.DEEP_OCEAN: 0x50C45,
+    Biome.OCEAN: 0x0D1EA8,
+    Biome.BEACH: 0xDECC9b,
+
+
+    Biome.ASHEN: 0x898580,
+    Biome.DRY_DESERT: 0xA29F78,
+    Biome.TUNDRA: 0xB9D79F,
+    Biome.SNOW: 0xBCD7C4,
+
+    Biome.TEMPERATE_DESERT: 0x9EA959,
+    Biome.OUTBACK: 0x89A45A,
+    Biome.TAIGA: 0x69843A,
+
+    Biome.PLAINS: 0x73A86A,
+    Biome.WOODLAND: 0x4A6E44,
+    Biome.JUNGLE: 0x006226,
+
+    Biome.DESERT: 0xCEC079,
+    Biome.TROPICAL: 0xADC767
 }
 
 
 class Terrain:
-    def __init__(self, p: float):
+    def __init__(self, e: float, m: float):
+        """
+        e is perlin elevation
+        m is perlin moisture
         """
 
-        :param p: Stands for perlin value: Range from 0-1.
-        """
-        self.perlin_val = p
-
-        if p > 1.0:   p = 1.0
-        elif p < 0.0: p = 0.0
+        if e > 1.0:   e = 1.0
+        elif e < 0.0: e = 0.0
 
         # Weird solution, might refactor later.
         # We want to multiply the perlin value by 100 and take the floor to get its integer equivalent.
         # The while loop checks if the "heat value" that corresponds with the perlin val exists, and
         # tries to find the next closest down if not.
-        biomeKey = floor(p * 100)
 
-        while biomeKey not in colorMap and biomeKey > 0:
-            biomeKey -= 1
+        biomeKey = floor(e * 100.0)
 
-        self.biome = biomeKey
+        self.biome = biome(biomeKey)
