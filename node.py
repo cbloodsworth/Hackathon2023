@@ -5,5 +5,5 @@ class Node:
         self.moisture = m   # A value from 0-1 representing the perlin generated value at this node.
         self.biome = biome(e, m)
         self.enemies = {}
-        self.items = {}
-        self.visited: bool = False
+        self.items = []
+        self.visited: bool
