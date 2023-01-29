@@ -10,7 +10,6 @@ screen_size = min(grid_height * block_size, 1000), min(grid_width * block_size, 
 screen_center = [screen_size[0] // 2, screen_size[1] // 2]
 
 
-
 class Grid:
     def __init__(self):
         self.nodes = {}
