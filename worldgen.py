@@ -1,8 +1,9 @@
 from enum import Enum
 from math import floor
+from random import randint
 
-OCTAVE = 8
-SEED = 823749
+OCTAVE = 4
+SEED = randint(0, 99999), randint(0, 99999), randint(0, 99999)
 
 
 class Biome(Enum):
@@ -10,11 +11,11 @@ class Biome(Enum):
     # Convoluted, I know. Maybe we could refactor this -C
 
     # BLANK = 100
-    DEEP_OCEAN = 50
-    OCEAN = 43
-    BEACH = 40
-    PLAINS = 37
-    FOREST = 30
+    DEEP_OCEAN = 60
+    OCEAN = 53
+    BEACH = 50
+    PLAINS = 42
+    FOREST = 20
     MOUNTAIN = 10
     TALL_MOUNTAIN = 0
 
