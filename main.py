@@ -11,8 +11,6 @@ pygame.init()
 # Font
 game_font = pygame.font.SysFont("monospace", 20)
 
-
-
 # GUI
 
 # Main screen UI
@@ -76,9 +74,9 @@ start_pos = [grid_width // 2, grid_height // 2]
 
 player = plr.Player([(start_pos[0] - 50) * block_size, (start_pos[1] - 50) * block_size])
 
-grid.nodes[50][50].items = {1: "Wood"}
-grid.nodes[49][50].items = {1: "Stone"}
-grid.nodes[51][50].items = {1: "Gold"}
+world_grid.nodes[50][50].items = {1: "Wood"}
+world_grid.nodes[49][50].items = {1: "Stone"}
+world_grid.nodes[51][50].items = {1: "Gold"}
 # Pre game bools
 game_running = True
 game_begin = False
@@ -92,7 +90,7 @@ while game_running:
     # Get player position
     plr_x = player.position[0]
     plr_y = player.position[1]
-    grid_items = grid.nodes[grid_width // 2 + plr_x][grid_height // 2 + plr_y].items
+    grid_items = world_grid.nodes[grid_width // 2 + plr_x][grid_height // 2 + plr_y].items
     if len(grid_items) > 0:
         print(grid_items[1])
     # Events
