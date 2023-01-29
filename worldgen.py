@@ -4,7 +4,7 @@ from math import pi
 from random import randint
 from pygame import Color
 
-#### CONSTANTS: CHANGE IF YOU WANT TO MODIFY WORLDGEN
+# CONSTANTS: CHANGE IF YOU WANT TO MODIFY WORLDGEN
 
 ELEV_OCTAVE = 8  # How large / detailed you want the world. POSITIVE INTEGER, DEFAULT=4
 ELEV_POWER = 2.0  # Higher values give higher peaks, lower valleys. POSITIVE FLOAT, DEFAULT=2.0
@@ -15,12 +15,15 @@ MOIST_POWER = 2.0
 POLE = 0.1
 EQUATOR = -0.1
 
+WALKABLE = 16
+
 SEED = [randint(0, 999999) for i in range(6)]  # Randomly generated seeds array. Size 6.
 
-## END CONSTANTS
+# END CONSTANTS
+
+
 def biome(elevation: float, moisture: float):
-    elevation *= 100
-    moisture *= 100
+
 
     if elevation < 10: return Biome.DEEP_OCEAN
     if elevation < 16: return Biome.OCEAN

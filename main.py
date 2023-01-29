@@ -3,16 +3,15 @@ import better_gui as ui
 import worldgen
 import grid as board
 import player as plr
+from worldgen import WALKABLE
+from math import floor
+from grid import *
 
 pygame.init()
 # Font
 game_font = pygame.font.SysFont("monospace", 20)
 
-# Board parameters
-block_size = 25  # Size of side of the block
-grid_height, grid_width = 100, 100
-screen_size = min(grid_height * block_size, 1000), min(grid_width * block_size, 650)  # Screen size in pixels
-screen_center = [screen_size[0] // 2, screen_size[1] // 2]
+
 
 # GUI
 
@@ -56,9 +55,15 @@ pygame.display.set_caption("Exploring The Unknown")
 
 # Grid, player, and clock initialization
 clock = pygame.time.Clock()
-grid = board.Grid()
-grid.generate_grid(grid_width, grid_height)
-player = plr.Player([0, 0])
+world_grid = board.Grid()
+world_grid.generate_grid(grid_width, grid_height)
+
+visited = set()
+pair_found = False
+
+start_pos = [grid_width // 2, grid_height // 2]
+
+player = plr.Player([(start_pos[0] - 50) * block_size, (start_pos[1] - 50) * block_size])
 
 # Pre game bools
 game_running = True
@@ -73,6 +78,7 @@ while game_running:
     # Get player position
     plr_x = player.position[0]
     plr_y = player.position[1]
+
     # Events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -96,6 +102,9 @@ while game_running:
 
         if keys[pygame.K_LSHIFT]: sprint = 2
 
+        if world_grid.nodes[floor(plr_x // grid_width)][floor(plr_y // grid_height)].elevation < WALKABLE:
+            sprint = 0.3
+
         if keys[pygame.K_w]: player.move([0, 2 * sprint])
         if keys[pygame.K_s]: player.move([0, -2 * sprint])
         if keys[pygame.K_a]: player.move([2 * sprint, 0])
@@ -104,7 +113,7 @@ while game_running:
         # Set tile position and colors
         for x in range(grid_width):
             for y in range(grid_height):
-                col = worldgen.colorMap[grid.nodes[x][y].biome]
+                col = worldgen.colorMap[world_grid.nodes[x][y].biome]
                 center_x = (x - grid_width // 2 + 0.5) * block_size + screen_center[0]
                 center_y = (y - grid_height // 2 + 0.5) * block_size + screen_center[1]
                 pygame.draw.rect(screen, col,
