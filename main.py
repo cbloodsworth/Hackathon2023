@@ -71,8 +71,9 @@ while game_running:
                 color = worldgen.biomeMap[grid.nodes[x][y].terrain.biome]
                 center_x = (x - grid_width // 2) * block_size + screen_center[0]
                 center_y = (y - grid_height // 2) * block_size + screen_center[1]
-                pygame.draw.rect(screen, color,
-                                 pygame.Rect(center_x + plr_x, + center_y + plr_y, block_size, block_size))
+
+                color = worldgen.colorMap[grid.nodes[x][y].terrain.biome]
+
 
         # Player draw
         pygame.draw.rect(screen, pygame.Color(255, 0, 0),
