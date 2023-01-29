@@ -50,10 +50,13 @@ class Textbox(Box):
     def __init__(self, font):
         super().__init__()
         self.text = ""
+        self.text_color = (0, 0, 0)
         self.font = font
         self.justify = "center"
 
     def draw(self, screen):
+        if self.text == "Gator":
+            self.text_color = (255, 255, 0)
         text_width, text_height = self.font.size(self.text)
         center_x = self.pos[0] - self.size[0] // 2
         center_y = self.pos[1] - self.size[1] // 2
@@ -71,7 +74,7 @@ class Textbox(Box):
             chunks = [self.text]
         count = 0
         for txt in chunks:
-            label = self.font.render(txt, 1, (0, 0, 0))
+            label = self.font.render(txt, 1, self.text_color)
             screen.blit(label, (bounds_center[0], bounds_center[1] + count))
             count += 16
 

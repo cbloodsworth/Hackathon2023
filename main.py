@@ -65,7 +65,7 @@ backpack_ui.objects["Inventory Box"] = inventory_box
 NUM_ITEMS = 36
 
 for i in range(NUM_ITEMS):
-    inventory_cell = ui.Textbox(game_font)
+    inventory_cell = ui.Textbox(game_font_smaller)
     cell_x = inventory_box.pos[0] + inventory_box.size[0] // 9 * (i % 9) - screen_size[0] * 0.75 // 2 + inventory_box.size[0] * 0.045 + (inventory_box.size[0] * .19 / 18)
     cell_y = inventory_box.pos[1] + inventory_box.size[1] // 4 * (i // 9) - screen_size[1] * 0.75 // 2 + inventory_box.size[0] * 0.045 + (inventory_box.size[1] * .06)
     inventory_cell.size = [inventory_box.size[0] * 0.09, inventory_box.size[0] * 0.09]
@@ -83,8 +83,14 @@ pygame.display.set_caption("Exploring The Unknown")
 clock = pygame.time.Clock()
 world_grid = board.Grid()
 world_grid.generate_grid(grid_width, grid_height)
+rand_x = random.randint(0, grid_width-1)
+rand_y = random.randint(0, grid_height-1)
+while world_grid.nodes[rand_x][rand_y].biome != Biome.DEEP_OCEAN:
+    rand_x = random.randint(0, grid_width-1)
+    rand_y = random.randint(0, grid_height-1)
+world_grid.nodes[rand_x][rand_y].items.append("Gator")
 
-
+print(rand_x, rand_y)
 for x in world_grid.nodes:
     for y in world_grid.nodes[x]:
         if world_grid.nodes[x][y].biome == Biome.WOODLAND:
@@ -120,7 +126,7 @@ while game_running:
             game_screen_ui.objects["Notification"].text = f"{grid_items[0]} found! Press x to pick up."
             if not has_boat:
                 game_screen_ui.buttons["Craft"].text = "5 wood to craft a boat"
-        else:
+        elif grid_items[0] == "Wood" or has_boat:
             game_screen_ui.objects["Notification"].text = f"??? found? Press x to pick up."
 
     else:
