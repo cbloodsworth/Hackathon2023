@@ -9,9 +9,9 @@ pygame.init()
 # Board parameters
 
 
-block_size = 5  # Size of side of the block
+block_size = 50  # Size of side of the block
 
-grid_height, grid_width = 100, 100
+grid_height, grid_width = 250, 250
 screen_size = min(grid_height * block_size, 1000), min(grid_width * block_size, 650)  # Screen size in pixels
 screen_center = [screen_size[0] // 2, screen_size[1] // 2]
 

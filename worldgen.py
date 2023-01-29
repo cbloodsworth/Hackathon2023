@@ -1,18 +1,21 @@
 from enum import Enum
 from math import floor
+from math import pi
 from random import randint
 from pygame import Color
 
 #### CONSTANTS: CHANGE IF YOU WANT TO MODIFY WORLDGEN
 
-ELEV_OCTAVE = 4  # How large / detailed you want the world. POSITIVE INTEGER, DEFAULT=4
+ELEV_OCTAVE = 8  # How large / detailed you want the world. POSITIVE INTEGER, DEFAULT=4
 ELEV_POWER = 2.0  # Higher values give higher peaks, lower valleys. POSITIVE FLOAT, DEFAULT=2.0
 
 MOIST_OCTAVE = 4  # Same as above but for moisture.
 MOIST_POWER = 2.0
 
-#SEED = [randint(0, 999999) for i in range(6)]  # Randomly generated seeds array. Size 6.
-SEED = [0,1,2,3,4,5]
+POLE = 0.1
+EQUATOR = -0.1
+
+SEED = [randint(0, 999999) for i in range(6)]  # Randomly generated seeds array. Size 6.
 
 ## END CONSTANTS
 def biome(elevation: float, moisture: float):
@@ -107,6 +110,7 @@ class Terrain:
         # We want to multiply the perlin value by 100 and take the floor to get its integer equivalent.
         # The while loop checks if the "heat value" that corresponds with the perlin val exists, and
         # tries to find the next closest down if not.
-        biomeKey = floor(e * 100)
+
+        biomeKey = floor(e * 100.0)
 
         self.biome = biome(biomeKey)
