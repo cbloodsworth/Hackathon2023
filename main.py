@@ -212,7 +212,9 @@ while game_running:
 
         for x in range(grid_width):
             for y in range(grid_height):
-                col = 0x888888 if not world_grid.nodes[x][y].visited else worldgen.colorMap[world_grid.nodes[x][y].biome]
+                curr = world_grid.nodes[x][y]
+                col = 0x888888 if not curr.visited else worldgen.colorMap[curr.biome]
+                if curr.items: col += 0xF0F000
                 pygame.draw.rect(screen, col, pygame.Rect(x*2 + 10, y*2 + 10, 2, 2))
 
         # Player draw
