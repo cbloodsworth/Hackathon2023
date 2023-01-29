@@ -62,7 +62,7 @@ for i in range(NUM_ITEMS):
     inventory_cell.size = [inventory_box.size[0] * 0.09, inventory_box.size[0] * 0.09]
     inventory_cell.pos = [cell_x, cell_y]
     inventory_cell.color = pygame.Color(255, 255, 255, 100)
-    backpack_ui.objects["Inventory Cell " + str(i)] = inventory_cell
+    backpack_ui.objects["Inventory Cell " + str(i+1)] = inventory_cell
 
 # List of UIs
 ui_list = [main_screen_ui, game_screen_ui, backpack_ui]
@@ -82,9 +82,9 @@ start_pos = [0, 0]
 
 player = plr.Player(start_pos)
 
-world_grid.nodes[50][50].items = {1: "Wood"}
-world_grid.nodes[49][50].items = {1: "Stone"}
-world_grid.nodes[51][50].items = {1: "Gold"}
+world_grid.nodes[20][13].items = ["Wood"]
+world_grid.nodes[22][16].items = ["Gold"]
+world_grid.nodes[24][19].items = ["Trash"]
 # Pre game bools
 game_running = True
 game_begin = False
@@ -100,11 +100,29 @@ while game_running:
     plr_y = player.position[1]
 
     gridwise_pos = [(plr_x + screen_size[0] // 2) // block_size, (plr_y + screen_size[1] // 2) // block_size]
-
+    grid_items = world_grid.nodes[gridwise_pos[0]][gridwise_pos[1]].items
+    if len(grid_items) > 0:
+        game_screen_ui.objects["Notification"].text = f"{grid_items[0]} found! Press x to pick up."
+    else:
+        game_screen_ui.objects["Notification"].text = ""
     # Events
+    pack_count = 0
+    for item in player.backpack:
+        pack_count += 1
+        backpack_ui.objects["Inventory Cell " + str(pack_count)].text = item
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_x:
+                if len(grid_items) > 0:
+                    deleted = []
+                    for item in grid_items:
+                        player.backpack.append(item)
+                        grid_items.remove(item)
+
+
         if event.type == pygame.MOUSEBUTTONUP:
             mouse_pos = pygame.mouse.get_pos()
             for u in ui_list:
