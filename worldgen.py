@@ -29,6 +29,7 @@ colorMap = {
     Biome.TALL_MOUNTAIN.value: (200, 232, 211)    # tall mountain
 }
 
+
 class Terrain:
     def __init__(self, p: float):
         """
