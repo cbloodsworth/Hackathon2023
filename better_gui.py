@@ -46,7 +46,6 @@ class Box(Object):
         screen.blit(self.layer, (center_x, center_y))
 
 
-
 class Textbox(Box):
     def __init__(self, font):
         super().__init__()
