@@ -86,8 +86,9 @@ world_grid.generate_grid(grid_width, grid_height)
 for x in world_grid.nodes:
     for y in world_grid.nodes[x]:
         if world_grid.nodes[x][y].biome == Biome.WOODLAND:
-            if x % 4 == 0:
+            if x % 5 == 0 or y % 4 == 0:
                 world_grid.nodes[x][y].items.append("Wood")
+
 pair_found = False
 
 start_pos = [grid_width * block_size // 2, grid_width * block_size // 2]
@@ -103,7 +104,7 @@ backpack_open = False
 has_boat = False
 while game_running:
     # Screen black
-    screen.fill(255,255,255)
+    screen.fill((0, 0, 255))
     # Frame rate
     time_delta = clock.tick(60) / 1000.0
     # Get player position
@@ -159,7 +160,8 @@ while game_running:
                                 if item == "Wood":
                                     wood_count += 1
                             if wood_count >= 5:
-                                while wood_count > 0:
+                                last_count = wood_count
+                                while wood_count > last_count - 5:
                                     backpack_ui.objects[f"Inventory Cell {wood_count}"].text = ""
                                     wood_count -= 1
                                     player.backpack.remove("Wood")
