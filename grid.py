@@ -1,6 +1,6 @@
 import node
-from math import pow
-from worldgen import ELEV_OCTAVE, MOIST_OCTAVE, SEED, ELEV_POWER, MOIST_POWER
+from math import pow, pi, sin
+from worldgen import ELEV_OCTAVE, MOIST_OCTAVE, SEED, ELEV_POWER, MOIST_POWER, POLE, EQUATOR
 from perlin_noise import PerlinNoise
 
 
@@ -40,10 +40,12 @@ class Grid:
                 elevation = pow(elevation, ELEV_POWER) if elevation > 0 else 0
                 moisture = pow(moisture, MOIST_POWER) if moisture > 0 else 0
 
-                elevation_array[x][y] = elevation
+                # We want lower temperatures as we go further from the equator and towards the poles
+                equiv_elevation = elevation + POLE*0.5 + (EQUATOR - POLE) * sin(pi * (y / height))
+                elevation_array[x][y] = equiv_elevation
                 moisture_array[x][y] = moisture
 
-                column[y] = node.Node(elevation, moisture)
+                column[y] = node.Node(equiv_elevation, moisture)
 
             self.nodes[x] = column
 
