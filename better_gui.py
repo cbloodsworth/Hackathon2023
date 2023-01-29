@@ -64,9 +64,9 @@ class Textbox(Box):
         if self.justify == "center":
             bounds_center = (bounds.center[0] - text_width / 2, bounds.center[1] - text_height / 2)
         else:
-            bounds_center = (bounds.center[0] - text_width / 4 - 15, bounds[1])
+            bounds_center = (bounds.center[0] - self.size[0] // 2, bounds[1])
         if text_width > self.size[0]:
-            chunks = wrap(self.text, 18)
+            chunks = wrap(self.text, 19)
         else:
             chunks = [self.text]
         count = 0

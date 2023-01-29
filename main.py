@@ -102,6 +102,8 @@ game_begin = False
 backpack_open = False
 has_boat = False
 while game_running:
+    # Screen black
+    screen.fill(255,255,255)
     # Frame rate
     time_delta = clock.tick(60) / 1000.0
     # Get player position
@@ -124,7 +126,7 @@ while game_running:
     pack_count = 0
     for item in player.backpack:
         pack_count += 1
-        backpack_ui.objects["Inventory Cell " + str(pack_count)].text = item
+        backpack_ui.objects[f"Inventory Cell {pack_count}"].text = item
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -132,7 +134,6 @@ while game_running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_x:
                 if len(grid_items) > 0 and pack_count < 36:
-                    deleted = []
                     for item in grid_items:
                         player.backpack.append(item)
                         grid_items.remove(item)
@@ -157,10 +158,13 @@ while game_running:
                             for item in player.backpack:
                                 if item == "Wood":
                                     wood_count += 1
-                                if wood_count == 5:
+                            if wood_count >= 5:
+                                while wood_count > 0:
+                                    backpack_ui.objects[f"Inventory Cell {wood_count}"].text = ""
+                                    wood_count -= 1
+                                    player.backpack.remove("Wood")
                                     has_boat = True
                                     game_screen_ui.buttons["Craft"].text = "Boat crafted!"
-                                    break
 
     if game_begin:
         # Player movement
