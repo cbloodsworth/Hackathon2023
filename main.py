@@ -212,7 +212,7 @@ while game_running:
                 else:
                     col = 0x666666
 
-                if not world_grid.nodes[x][y].visited and abs(x - gridwise_pos[0]) < 5 and abs(y - gridwise_pos[1]) < 5:
+                if abs(x - gridwise_pos[0]) < 5 and abs(y - gridwise_pos[1]) < 5:
                     world_grid.nodes[x][y].visited = True
                     col += 0x212121
 
