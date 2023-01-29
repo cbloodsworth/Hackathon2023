@@ -233,6 +233,9 @@ while game_running:
                          pygame.Rect(screen_center[0] - block_size / 4, screen_center[1] - block_size / 4,
                                      block_size / 2, block_size / 2))
 
+        pygame.draw.rect(screen, player_color,
+                         pygame.Rect(gridwise_pos[0]*2 + 10, gridwise_pos[1]*2 + 10, 2, 2))
+
     # GUI
     if game_begin:
         game_screen_ui.draw_all(screen)
