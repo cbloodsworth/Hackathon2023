@@ -11,6 +11,8 @@ pygame.init()
 # Font
 game_font = pygame.font.SysFont("monospace", 20)
 
+game_font_smaller = pygame.font.SysFont("monospace", 16)
+
 # Main screen UI
 main_screen_ui = ui.UI()  # Initialize UI for main screen
 
@@ -19,7 +21,7 @@ start_btn = ui.Textbox(game_font)
 start_btn.pos = screen_center
 start_btn.size = [300, 100]
 start_btn.text = "Begin Your Journey"
-start_btn.color = pygame.Color(0, 255, 0, 0)
+start_btn.color = pygame.Color(0, 255, 0, 255)
 main_screen_ui.buttons["Start Button"] = start_btn
 
 # In game screen UI
@@ -30,11 +32,18 @@ open_backpack_btn = ui.Textbox(game_font)
 open_backpack_btn.pos = [screen_size[0] * 0.85, screen_size[1] * 0.9]
 open_backpack_btn.size = [200, 90]
 open_backpack_btn.text = "Open Backpack"
-open_backpack_btn.color = pygame.Color(0, 255, 0, 0)
+open_backpack_btn.color = pygame.Color(0, 255, 0, 255)
 game_screen_ui.buttons["Open Backpack"] = open_backpack_btn
 
-# Backpack UI
+# Notification text box
+notification = ui.Textbox(game_font_smaller)
+notification.justify = "top"
+notification.pos = [screen_size[0] * 0.85, screen_size[1] * 0.3]
+notification.size = [200, 150]
+notification.color = pygame.Color(255, 255, 255, 180)
+game_screen_ui.objects["Notification"] = notification
 
+# Backpack UI
 backpack_ui = ui.UI()
 
 inventory_box = ui.Box()
@@ -46,12 +55,12 @@ backpack_ui.objects["Inventory Box"] = inventory_box
 NUM_ITEMS = 36
 
 for i in range(NUM_ITEMS):
-    inventory_cell = ui.Box()
+    inventory_cell = ui.Textbox(game_font)
     cell_x = inventory_box.pos[0] + inventory_box.size[0] // 9 * (i % 9) - screen_size[0] * 0.75 // 2 + inventory_box.size[0] * 0.045 + (inventory_box.size[0] * .19 / 18)
-    cell_y = inventory_box.pos[1] + inventory_box.size[1] // 4 * (i // 9) - screen_size[1] * 0.75 // 2 + inventory_box.size[0] * 0.045 + (inventory_box.size[1] * .08)
+    cell_y = inventory_box.pos[1] + inventory_box.size[1] // 4 * (i // 9) - screen_size[1] * 0.75 // 2 + inventory_box.size[0] * 0.045 + (inventory_box.size[1] * .06)
     inventory_cell.size = [inventory_box.size[0] * 0.09, inventory_box.size[0] * 0.09]
     inventory_cell.pos = [cell_x, cell_y]
-    inventory_cell.color = pygame.Color(0, 0, 255, 100)
+    inventory_cell.color = pygame.Color(255, 255, 255, 100)
     backpack_ui.objects["Inventory Cell " + str(i)] = inventory_cell
 
 # List of UIs
@@ -72,6 +81,9 @@ start_pos = [0, 0]
 
 player = plr.Player(start_pos)
 
+world_grid.nodes[50][50].items = {1: "Wood"}
+world_grid.nodes[49][50].items = {1: "Stone"}
+world_grid.nodes[51][50].items = {1: "Gold"}
 # Pre game bools
 game_running = True
 game_begin = False
@@ -85,6 +97,7 @@ while game_running:
     # Get player position
     plr_x = player.position[0]
     plr_y = player.position[1]
+
     gridwise_pos = [(plr_x + screen_size[0] // 2) // block_size, (plr_y + screen_size[1] // 2) // block_size]
 
     # Events
