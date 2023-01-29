@@ -38,8 +38,8 @@ game_screen_ui.buttons["Open Backpack"] = open_backpack_btn
 # Notification text box
 notification = ui.Textbox(game_font_smaller)
 notification.justify = "top"
-notification.pos = [screen_size[0] * 0.85, screen_size[1] * 0.3]
-notification.size = [200, 150]
+notification.pos = [screen_size[0] * 0.85, screen_size[1] * 0.15]
+notification.size = [200, 50]
 notification.color = pygame.Color(255, 255, 255, 180)
 game_screen_ui.objects["Notification"] = notification
 
@@ -90,7 +90,6 @@ game_begin = False
 
 # In game bools
 backpack_open = False
-
 while game_running:
     # Frame rate
     time_delta = clock.tick(60) / 1000.0
@@ -100,10 +99,16 @@ while game_running:
     grid_items = world_grid.nodes[grid_width // 2 + plr_x][grid_height // 2 + plr_y].items
     if len(grid_items) > 0:
         game_screen_ui.objects["Notification"].text = f"{grid_items[1]} found! Press x to pick up."
+    else:
+        game_screen_ui.objects["Notification"].text = ""
     # Events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_running = False
+        if event.type == pygame.KEYDOWN:
+            if len(grid_items) > 0:
+                for item in grid_items:
+                    player.backpack.append(item)
         if event.type == pygame.MOUSEBUTTONUP:
             mouse_pos = pygame.mouse.get_pos()
             for u in ui_list:

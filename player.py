@@ -2,7 +2,7 @@ from grid import *
 
 class Player:
     def __init__(self, position):
-        self.backpack = {}
+        self.backpack = []
         self.stats = {"health_points": 10, "move_speed": 1}
         self.position = position
         self.grid_pos = self.pos_to_grid(position)
