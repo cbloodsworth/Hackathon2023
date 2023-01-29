@@ -10,7 +10,7 @@ from grid import *
 pygame.init()
 # Font
 game_font = pygame.font.SysFont("monospace", 20)
-
+game_font_smaller = pygame.font.SysFont("monospace", 16)
 # GUI
 
 # Main screen UI
@@ -21,7 +21,7 @@ start_btn = ui.Textbox(game_font)
 start_btn.pos = screen_center
 start_btn.size = [300, 100]
 start_btn.text = "Begin Your Journey"
-start_btn.color = pygame.Color(0, 255, 0, 0)
+start_btn.color = pygame.Color(0, 255, 0, 255)
 main_screen_ui.buttons["Start Button"] = start_btn
 
 # In game screen UI
@@ -32,11 +32,18 @@ open_backpack_btn = ui.Textbox(game_font)
 open_backpack_btn.pos = [screen_size[0] * 0.85, screen_size[1] * 0.9]
 open_backpack_btn.size = [200, 90]
 open_backpack_btn.text = "Open Backpack"
-open_backpack_btn.color = pygame.Color(0, 255, 0, 0)
+open_backpack_btn.color = pygame.Color(0, 255, 0, 255)
 game_screen_ui.buttons["Open Backpack"] = open_backpack_btn
 
-# Backpack UI
+# Notification text box
+notification = ui.Textbox(game_font_smaller)
+notification.justify = "top"
+notification.pos = [screen_size[0] * 0.85, screen_size[1] * 0.3]
+notification.size = [200, 150]
+notification.color = pygame.Color(255, 255, 255, 180)
+game_screen_ui.objects["Notification"] = notification
 
+# Backpack UI
 backpack_ui = ui.UI()
 
 inventory_box = ui.Box()
@@ -48,7 +55,7 @@ backpack_ui.objects["Inventory Box"] = inventory_box
 NUM_ITEMS = 36
 
 for i in range(NUM_ITEMS):
-    inventory_cell = ui.Box()
+    inventory_cell = ui.Textbox(game_font)
     cell_x = inventory_box.pos[0] + inventory_box.size[0] // 9 * (i % 9) - screen_size[0] * 0.75 // 2 + inventory_box.size[0] * 0.045 + (inventory_box.size[0] * .19 / 18)
     cell_y = inventory_box.pos[1] + inventory_box.size[1] // 4 * (i // 9) - screen_size[1] * 0.75 // 2 + inventory_box.size[0] * 0.045 + (inventory_box.size[1] * .06)
     inventory_cell.size = [inventory_box.size[0] * 0.09, inventory_box.size[0] * 0.09]
@@ -92,7 +99,7 @@ while game_running:
     plr_y = player.position[1]
     grid_items = world_grid.nodes[grid_width // 2 + plr_x][grid_height // 2 + plr_y].items
     if len(grid_items) > 0:
-        print(grid_items[1])
+        game_screen_ui.objects["Notification"].text = f"{grid_items[1]} found! Press x to pick up."
     # Events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
