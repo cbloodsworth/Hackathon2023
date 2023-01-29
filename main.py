@@ -214,10 +214,10 @@ while game_running:
         # Set tile position and colors
         for x in range(grid_width):
             for y in range(grid_height):
-                if world_grid.nodes[x][y].visited:
-                    col = worldgen.colorMap[world_grid.nodes[x][y].biome]
-                else:
-                    col = 0x666666
+                #if world_grid.nodes[x][y].visited:
+                col = worldgen.colorMap[world_grid.nodes[x][y].biome]
+                #else:
+                    #col = 0x666666
 
                 if abs(x - gridwise_pos[0]) < 5 and abs(y - gridwise_pos[1]) < 5:
                     world_grid.nodes[x][y].visited = True
@@ -233,7 +233,11 @@ while game_running:
             for y in range(grid_height):
                 curr = world_grid.nodes[x][y]
                 col = worldgen.colorMap[curr.biome]
-                if curr.items: col = 0x00F0F0
+                if curr.items:
+                    if curr.items[0] == "Wood":
+                        col = 0x00F0F0
+                    else:
+                        col = 0xAB9213
                 if not curr.visited:
                     col = 0x888888
                 pygame.draw.rect(screen, col, pygame.Rect(x*2 + 10, y*2 + 10, 2, 2))
