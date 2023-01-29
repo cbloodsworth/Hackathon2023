@@ -77,7 +77,7 @@ for i in range(NUM_ITEMS):
 ui_list = [main_screen_ui, game_screen_ui, backpack_ui]
 # Screen initialization
 screen = pygame.display.set_mode(screen_size)
-pygame.display.set_caption("Exploring The Unknown")
+pygame.display.set_caption("Swamp Investigator")
 
 # Grid, player, and clock initialization
 clock = pygame.time.Clock()
