@@ -84,10 +84,10 @@ world_grid = board.Grid()
 world_grid.generate_grid(grid_width, grid_height)
 
 for x in world_grid.nodes:
-    for node in world_grid.nodes[x]:
-        if node.biome == Biome.WOODLAND:
+    for y in world_grid.nodes[x]:
+        if world_grid.nodes[x][y].biome == Biome.WOODLAND:
             if x % 4 == 0:
-                node.items.append("Wood")
+                world_grid.nodes[x][y].items.append("Wood")
 pair_found = False
 
 start_pos = [grid_width * block_size // 2, grid_width * block_size // 2]
