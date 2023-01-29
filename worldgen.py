@@ -2,8 +2,9 @@ from enum import Enum
 from math import floor
 from random import randint
 
-OCTAVE = 4
-SEED = randint(0, 99999), randint(0, 99999), randint(0, 99999)
+OCTAVE = 4  # How large / detailed you want the world. POSITIVE INTEGER, DEFAULT=4
+ELEV_POWER = 2.0  # Higher values give higher peaks, lower valleys. POSITIVE FLOAT, DEFAULT=2.0
+SEED = randint(0, 99999), randint(0, 99999), randint(0, 99999)  # Randomly generated seeds.
 
 
 class Biome(Enum):
@@ -11,13 +12,13 @@ class Biome(Enum):
     # Convoluted, I know. Maybe we could refactor this -C
 
     # BLANK = 100
-    DEEP_OCEAN = 60
-    OCEAN = 53
-    BEACH = 50
-    PLAINS = 42
-    FOREST = 20
-    MOUNTAIN = 10
-    TALL_MOUNTAIN = 0
+    TALL_MOUNTAIN = 80
+    MOUNTAIN = 60
+    FOREST = 40
+    PLAINS = 20
+    BEACH = 16
+    OCEAN = 10
+    DEEP_OCEAN = 0
 
 
 colorMap = {

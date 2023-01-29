@@ -1,6 +1,6 @@
 import node
 from math import pow
-from worldgen import OCTAVE, SEED
+from worldgen import OCTAVE, SEED, ELEV_POWER
 from perlin_noise import PerlinNoise
 
 
@@ -32,7 +32,7 @@ class Grid:
                             0.50 * noise2([x / width, y / height]) + \
                             0.25 * noise3([x / width, y / height]) + 0.5
 
-                elevation = pow(elevation, 0.9) if elevation > 0 else 0
+                elevation = pow(elevation, ELEV_POWER) if elevation > 0 else 0
                 # TEST_max = max(elevation, TEST_max)
                 # TEST_min = min(elevation, TEST_min)
 
