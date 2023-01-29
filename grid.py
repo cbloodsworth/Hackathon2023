@@ -4,7 +4,7 @@ from worldgen import ELEV_OCTAVE, MOIST_OCTAVE, SEED, ELEV_POWER, MOIST_POWER, P
 from perlin_noise import PerlinNoise
 
 # Board parameters
-block_size = 25  # Size of side of the block
+block_size = 15  # Size of side of the block
 grid_height, grid_width = 100, 100
 screen_size = min(grid_height * block_size, 1000), min(grid_width * block_size, 650)  # Screen size in pixels
 screen_center = [screen_size[0] // 2, screen_size[1] // 2]

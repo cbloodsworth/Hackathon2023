@@ -184,7 +184,6 @@ while game_running:
 
         if currentBiome == Biome.DEEP_OCEAN:
             if has_boat:
-                player_color = 0x964B00
                 sprint = 3
             else:
                 sprint = 0.5
@@ -235,6 +234,9 @@ while game_running:
         # Player draw
         if not has_boat:
             player_color = 0x880022 if currentBiome == Biome.DEEP_OCEAN else 0xFF0000
+        else:
+            player_color = 0x964B00 if currentBiome == Biome.DEEP_OCEAN else 0xFF0000
+
         pygame.draw.rect(screen, player_color,
                          pygame.Rect(screen_center[0] - block_size / 4, screen_center[1] - block_size / 4,
                                      block_size / 2, block_size / 2))

@@ -12,8 +12,8 @@ ELEV_POWER = 1.5  # Higher values give higher peaks, lower valleys. POSITIVE FLO
 MOIST_OCTAVE = 4  # Same as above but for moisture.
 MOIST_POWER = 2.0
 
-POLE = 0.1
-EQUATOR = -0.1
+POLE = 0.1        # Areas closer to the poles are colder, this changes the size of them
+EQUATOR = -0.1    # Changes the size of the hotter equator region
 
 WATER = 16
 
