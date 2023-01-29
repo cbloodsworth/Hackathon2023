@@ -17,11 +17,15 @@ class Grid:
         noise1 = PerlinNoise(octaves=OCTAVE * 1, seed=SEED)
         noise2 = PerlinNoise(octaves=OCTAVE * 2, seed=SEED)
         noise3 = PerlinNoise(octaves=OCTAVE * 4, seed=SEED)
-        pic = [[1.00 * noise1([i / height, j / width]) +
-                0.50 * noise2([i / height, j / width]) +
-                0.25 * noise3([i / height, j / width]) for j in range(width)] for i in range(height)]
+
+        pic = [[0 for i in range(width)] for j in range(height)]
+
         for x in range(width):
             column = {}
             for y in range(height):
+                pic[x][y] = 1.00 * noise1([x / width, y / height]) + \
+                            0.50 * noise2([x / width, y / height]) + \
+                            0.25 * noise3([x / width, y / height])
                 column[y] = node.Node(pic[x][y] + 0.5)
+
             self.nodes[x] = column
