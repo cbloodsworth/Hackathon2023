@@ -53,10 +53,10 @@ NUM_ITEMS = 36
 for i in range(NUM_ITEMS):
     inventory_cell = ui.Box()
     cell_x = inventory_box.pos[0] + inventory_box.size[0] // 9 * (i % 9) - screen_size[0] * 0.75 // 2 + inventory_box.size[0] * 0.045 + (inventory_box.size[0] * .19 / 18)
-    cell_y = inventory_box.pos[1] + inventory_box.size[1] // 4 * (i // 9) - screen_size[1] * 0.75 // 2 + inventory_box.size[0] * 0.045 + (inventory_box.size[1] * .08)
+    cell_y = inventory_box.pos[1] + inventory_box.size[1] // 4 * (i // 9) - screen_size[1] * 0.75 // 2 + inventory_box.size[0] * 0.045 + (inventory_box.size[1] * .06)
     inventory_cell.size = [inventory_box.size[0] * 0.09, inventory_box.size[0] * 0.09]
     inventory_cell.pos = [cell_x, cell_y]
-    inventory_cell.color = pygame.Color(0, 0, 255, 100)
+    inventory_cell.color = pygame.Color(255, 255, 255, 100)
     backpack_ui.objects["Inventory Cell " + str(i)] = inventory_cell
 
 # List of UIs
@@ -71,6 +71,9 @@ grid = board.Grid()
 grid.generate_grid(grid_width, grid_height)
 player = plr.Player([0, 0])
 
+grid.nodes[50][50].items = {1: "Wood"}
+grid.nodes[49][50].items = {1: "Stone"}
+grid.nodes[51][50].items = {1: "Gold"}
 # Pre game bools
 game_running = True
 game_begin = False
@@ -84,6 +87,9 @@ while game_running:
     # Get player position
     plr_x = player.position[0]
     plr_y = player.position[1]
+    grid_items = grid.nodes[grid_width // 2 + plr_x][grid_height // 2 + plr_y].items
+    if len(grid_items) > 0:
+        print(grid_items[1])
     # Events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
