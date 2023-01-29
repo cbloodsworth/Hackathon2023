@@ -15,29 +15,35 @@ class Grid:
         :param height: Grid height in blocks
         :return:
         """
-        noise1 = PerlinNoise(octaves=OCTAVE * 1, seed=SEED[0])
-        noise2 = PerlinNoise(octaves=OCTAVE * 2, seed=SEED[1])
-        noise3 = PerlinNoise(octaves=OCTAVE * 4, seed=SEED[2])
+        e_noise1 = PerlinNoise(octaves=OCTAVE * 1, seed=SEED[0])
+        e_noise2 = PerlinNoise(octaves=OCTAVE * 2, seed=SEED[1])
+        e_noise3 = PerlinNoise(octaves=OCTAVE * 4, seed=SEED[2])
 
-        pic = [[0.0 for i in range(width)] for j in range(height)]  # Initializing
+        m_noise1 = PerlinNoise(octaves=OCTAVE * 1, seed=SEED[3])
+        m_noise2 = PerlinNoise(octaves=OCTAVE * 2, seed=SEED[4])
+        m_noise3 = PerlinNoise(octaves=OCTAVE * 4, seed=SEED[5])
 
-        # These variables are good if you want to make sure the elevation range is valid (0-1).
-        # TEST_min = 255
-        # TEST_max = 0
+        elevation_array = [[0.0 for i in range(width)] for j in range(height)]  # Initializing
+        moisture_array = [[0.0 for i in range(width)] for j in range(height)]  # Initializing
 
         for x in range(width):
             column = {}
             for y in range(height):
-                elevation = 1.00 * noise1([x / width, y / height]) + \
-                            0.50 * noise2([x / width, y / height]) + \
-                            0.25 * noise3([x / width, y / height]) + 0.5
+                elevation = 1.00 * e_noise1([x / width, y / height]) + \
+                            0.50 * e_noise2([x / width, y / height]) + \
+                            0.25 * e_noise3([x / width, y / height]) + 0.5
+
+                moisture = 1.00 * m_noise1([x / width, y / height]) + \
+                           0.50 * m_noise2([x / width, y / height]) + \
+                           0.25 * m_noise3([x / width, y / height]) + 0.5
 
                 elevation = pow(elevation, ELEV_POWER) if elevation > 0 else 0
-                # TEST_max = max(elevation, TEST_max)
-                # TEST_min = min(elevation, TEST_min)
+                moisture = pow(moisture, ELEV_POWER) if moisture > 0 else 0
 
-                pic[x][y] = elevation
-                column[y] = node.Node(elevation)
+                elevation_array[x][y] = elevation
+                moisture_array[x][y] = moisture
+
+                column[y] = node.Node(elevation, moisture)
 
             self.nodes[x] = column
 
