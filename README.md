@@ -3,7 +3,9 @@
 In a procedurally generated swamp, one Investigator is determined to find the fabled Golden Gator statue. Can you brave the unknown and gather the resources necessary to bring you closer to the idol? 
 
 # To Install
-Clone the repository using `git clone https://github.com/cbloodsworth/SwampInvestigator`. Run main.py and you should be good to go!
+Clone the repository using `git clone https://github.com/cbloodsworth/SwampInvestigator`. 
+Run `pip install -r requirements.txt` (or use your own favorite python package manager) to install the dependencies required.
+Run `py main.py` and you should be good to go!
 
 Inspiration
 When we were considering the concept of "exploring the unknown," the first thing that came to mind was procedural generation. We eventually came to the conclusion that it would be most fun if we were to make a game around it.
