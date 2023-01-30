@@ -1,4 +1,5 @@
 # SwampInvestigator
+## Project by [Chris Bloodsworth](https://github.com/cbloodsworth/) and [Jonathan Levy](https://github.com/levyjonathan31) for [SwampHacksIX](https://swamphacks-ix.devpost.com/)
 In a procedurally generated swamp, one Investigator is determined to find the fabled Golden Gator statue. Can you brave the unknown and gather the resources necessary to bring you closer to the idol? 
 
 # To Install
