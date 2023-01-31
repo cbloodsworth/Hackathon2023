@@ -1,5 +1,5 @@
 import pygame
-import better_gui as ui
+import gui as ui
 import worldgen
 import grid as board
 import player as plr
