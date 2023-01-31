@@ -148,26 +148,8 @@ while game_running:
                 pygame.draw.rect(window, col,
                                  pygame.Rect(center_x - plr_x, + center_y - plr_y, block_size, block_size))
 
-        for x in range(grid_width):
-            for y in range(grid_height):
-                curr = world_grid.nodes[x][y]
-                col = worldgen.colorMap[curr.biome]
-                if curr.items:
-                    if curr.items[0] == "Wood":
-                        col = 0x00F0F0
-                    else:
-                        col = 0xAB9213
-                if not curr.visited:
-                    col = 0x888888
-                pygame.draw.rect(window, col, pygame.Rect(x * 2 + 10, y * 2 + 10, 2, 2))
 
-        # Player draw
-                # Only draw tiles if visible
-                if -VISIBLE_BLOCKS_HORZ // 2 < i < VISIBLE_BLOCKS_HORZ // 2 and\
-                   -VISIBLE_BLOCKS_VERT // 2 < j < VISIBLE_BLOCKS_VERT // 2:
-                    pygame.draw.rect(window, col if world_grid.nodes[x][y].visited else 0x666666,
-                                     pygame.Rect(center_x - plr_x, center_y - plr_y, block_size, block_size))
-
+        # MINIMAP STUFF
         for i in range(-MM_SIZE_HORZ, MM_SIZE_HORZ):
             for j in range(-MM_SIZE_VERT, MM_SIZE_VERT):
                 x = max(0, min(i + gridwise_pos[0], grid_width - 1))
@@ -181,23 +163,6 @@ while game_running:
                                              (y + MM_OFFSET_Y - plr_y // block_size) * MM_ZOOM, MM_ZOOM,
                                              MM_ZOOM))
 
-        # Player color change if in water
-                pygame.draw.rect(window, col,
-                                 pygame.Rect(center_x - plr_x, + center_y - plr_y, block_size, block_size))
-
-        for x in range(grid_width):
-            for y in range(grid_height):
-                curr = world_grid.nodes[x][y]
-                col = worldgen.colorMap[curr.biome]
-                if curr.items:
-                    if curr.items[0] == "Wood":
-                        col = 0x00F0F0
-                    else:
-                        col = 0xAB9213
-                if not curr.visited:
-                    col = 0x888888
-                pygame.draw.rect(window, col, pygame.Rect(x * 2 + 10, y * 2 + 10, 2, 2))
-
         # Player draw
         if not has_boat:
             player_color = 0x880022 if currentBiome == Biome.DEEP_OCEAN else 0xFF0000
@@ -209,16 +174,10 @@ while game_running:
                          pygame.Rect(screen_center[0] - block_size / 4, screen_center[1] - block_size / 4,
                                      block_size / 2, block_size / 2))
 
-        pygame.draw.rect(window, player_color,
-                         pygame.Rect(gridwise_pos[0] * 2 + 10, gridwise_pos[1] * 2 + 10, 2, 2))
         # Minimap player
         pygame.draw.rect(window, player_color,
                          pygame.Rect((VISIBLE_BLOCKS_VERT // 2) * MM_ZOOM + MM_OFFSET_X,
                                      (VISIBLE_BLOCKS_VERT // 2) * MM_ZOOM + MM_OFFSET_Y, 2, 2))
-
-        # Minimap Border
-        # pygame.draw.rect(screen, 0xAAAAAA,
-        #                  pygame.Rect()
 
     # Draw GUI
     gui_manager.draw_all(screen)

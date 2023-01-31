@@ -8,7 +8,7 @@ MAX_SCREEN_WIDTH = 1000
 MAX_SCREEN_HEIGHT = 650
 
 block_size = 15  # Size of side of the block
-grid_height, grid_width = 250, 250
+grid_height, grid_width = 150, 150
 
 VISIBLE_BLOCKS_HORZ: int = MAX_SCREEN_WIDTH // block_size + 5  # The +5 here is for padding so it can render partial blocks off screen
 VISIBLE_BLOCKS_VERT: int = MAX_SCREEN_HEIGHT // block_size + 5
