@@ -82,7 +82,7 @@ while game_running:
             its = world_grid.nodes[gridwise_pos[0]][gridwise_pos[1]].items
             gui_manager.objects["alert_box"].text = f"Press x to pick up {its[0]}"
         else:
-            gui_manager.objects["alert_box"].text = ""
+            gui_manager.objects["alert_box"].text = "Open source club omegalul rekt nerd"
         # Player movement
         keys = pygame.key.get_pressed()
 
