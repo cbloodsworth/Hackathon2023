@@ -211,49 +211,67 @@ while game_running:
         if gridwise_pos[0] < grid_width - 1:
             if keys[pygame.K_d]: player.move([3 * sprint, 0])
 
-        # Set tile position and colors
-        for x in range(grid_width):
-            for y in range(grid_height):
-                if world_grid.nodes[x][y].visited:
-                    col = worldgen.colorMap[world_grid.nodes[x][y].biome]
-                else:
-                    col = 0x666666
+        # In pixels
+        MM_OFFSET_X = 30
+        MM_OFFSET_Y = 30
+        MM_BORDER_THICK = 5
 
-                if abs(x - gridwise_pos[0]) < 5 and abs(y - gridwise_pos[1]) < 5:
+        MM_SIZE_HORZ = VISIBLE_BLOCKS_HORZ // 2 + 0  # Change second value. WARNING: WILL AFFECT PERFORMANCE
+        MM_SIZE_VERT = VISIBLE_BLOCKS_HORZ // 2 + 0
+        # The astute eye may notice that VISIBLE_BLOCKS_HORZ is used, rather than its vertical equivalent.
+        # This is intentional and allows the minimap to be square.
+
+        MM_ZOOM = 2
+
+        # Set tile position and colors
+        for i in range(-MM_SIZE_HORZ, MM_SIZE_HORZ):
+            for j in range(-MM_SIZE_VERT, MM_SIZE_VERT):
+                x = max(0, min(i + gridwise_pos[0], grid_width - 1))
+                y = max(0, min(j + gridwise_pos[1], grid_height - 1))
+
+                # Color is initially set to the biome color value
+                col = worldgen.colorMap[world_grid.nodes[x][y].biome]
+
+                if abs(x - gridwise_pos[0]) < FOG_OF_WAR and abs(y - gridwise_pos[1]) < FOG_OF_WAR:
                     world_grid.nodes[x][y].visited = True
                     col += 0x212121
 
                 center_x, center_y = x * block_size, y * block_size
 
+                # Only draw tiles if visible
+                if -VISIBLE_BLOCKS_HORZ // 2 < i < VISIBLE_BLOCKS_HORZ // 2 and\
+                   -VISIBLE_BLOCKS_VERT // 2 < j < VISIBLE_BLOCKS_VERT // 2:
+                    pygame.draw.rect(screen, col if world_grid.nodes[x][y].visited else 0x666666,
+                                     pygame.Rect(center_x - plr_x, center_y - plr_y, block_size, block_size))
+
+        for i in range(-MM_SIZE_HORZ, MM_SIZE_HORZ):
+            for j in range(-MM_SIZE_VERT, MM_SIZE_VERT):
+                x = max(0, min(i + gridwise_pos[0], grid_width - 1))
+                y = max(0, min(j + gridwise_pos[1], grid_height - 1))
+
+                col = worldgen.colorMap[world_grid.nodes[x][y].biome]
+
+                # Draw Minimap, which has double the view distance as the regular viewport
                 pygame.draw.rect(screen, col,
-                                 pygame.Rect(center_x - plr_x, + center_y - plr_y, block_size, block_size))
+                                 pygame.Rect((x + MM_OFFSET_X - plr_x // block_size) * MM_ZOOM,
+                                             (y + MM_OFFSET_Y - plr_y // block_size) * MM_ZOOM, MM_ZOOM,
+                                             MM_ZOOM))
 
-
-        for x in range(grid_width):
-            for y in range(grid_height):
-                curr = world_grid.nodes[x][y]
-                col = worldgen.colorMap[curr.biome]
-                if curr.items:
-                    if curr.items[0] == "Wood":
-                        col = 0x00F0F0
-                    else:
-                        col = 0xAB9213
-                if not curr.visited:
-                    col = 0x888888
-                pygame.draw.rect(screen, col, pygame.Rect(x*2 + 10, y*2 + 10, 2, 2))
-
-        # Player draw
+        # Player color change if in water
         if not has_boat:
             player_color = 0x880022 if currentBiome == Biome.DEEP_OCEAN else 0xFF0000
         else:
             player_color = 0x964B00 if currentBiome == Biome.DEEP_OCEAN else 0xFF0000
 
+        # Actual player
         pygame.draw.rect(screen, player_color,
                          pygame.Rect(screen_center[0] - block_size / 4, screen_center[1] - block_size / 4,
                                      block_size / 2, block_size / 2))
 
+        # Minimap player
         pygame.draw.rect(screen, player_color,
-                         pygame.Rect(gridwise_pos[0]*2 + 10, gridwise_pos[1]*2 + 10, 2, 2))
+                         pygame.Rect((VISIBLE_BLOCKS_VERT // 2) * MM_ZOOM + MM_OFFSET_X,
+                                     (VISIBLE_BLOCKS_VERT // 2) * MM_ZOOM + MM_OFFSET_Y, 2, 2))
 
     # GUI
     if game_begin:
