@@ -273,6 +273,10 @@ while game_running:
                          pygame.Rect((VISIBLE_BLOCKS_VERT // 2) * MM_ZOOM + MM_OFFSET_X,
                                      (VISIBLE_BLOCKS_VERT // 2) * MM_ZOOM + MM_OFFSET_Y, 2, 2))
 
+        # Minimap Border
+        # pygame.draw.rect(screen, 0xAAAAAA,
+        #                  pygame.Rect()
+
     # GUI
     if game_begin:
         game_screen_ui.draw_all(screen)

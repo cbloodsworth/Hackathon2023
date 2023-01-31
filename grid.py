@@ -8,12 +8,12 @@ MAX_SCREEN_WIDTH = 1000
 MAX_SCREEN_HEIGHT = 650
 
 block_size = 15  # Size of side of the block
-grid_height, grid_width = 200, 200
+grid_height, grid_width = 250, 250
 
 VISIBLE_BLOCKS_HORZ: int = MAX_SCREEN_WIDTH // block_size + 5  # The +5 here is for padding so it can render partial blocks off screen
 VISIBLE_BLOCKS_VERT: int = MAX_SCREEN_HEIGHT // block_size + 5
 
-FOG_OF_WAR: int = 20
+FOG_OF_WAR: int = 8
 
 screen_size = min(grid_height * block_size, MAX_SCREEN_WIDTH), min(grid_width * block_size, MAX_SCREEN_HEIGHT)  # Screen size in pixels
 screen_center = [screen_size[0] // 2, screen_size[1] // 2]
