@@ -4,9 +4,9 @@ import grid as board
 import player as plr
 from worldgen import *
 import random
-from math import floor
 from grid import *
-random.seed()
+
+# Game needs to start otherwise Font cannot load
 pygame.init()
 from gui import gui_manager
 
@@ -36,13 +36,10 @@ for x in world_grid.nodes:
             if x % 5 == 0 or y % 4 == 0:
                 world_grid.nodes[x][y].items.append("Wood")
 
-pair_found = False
-
 start_pos = [grid_width * block_size // 2, grid_width * block_size // 2]
 
 player = plr.Player(start_pos)
 
-# Pre game bools
 game_running = True
 has_boat = True
 game_begin = False
@@ -148,10 +145,27 @@ while game_running:
 
                 center_x, center_y = x * block_size, y * block_size
 
+                pygame.draw.rect(window, col,
+                                 pygame.Rect(center_x - plr_x, + center_y - plr_y, block_size, block_size))
+
+        for x in range(grid_width):
+            for y in range(grid_height):
+                curr = world_grid.nodes[x][y]
+                col = worldgen.colorMap[curr.biome]
+                if curr.items:
+                    if curr.items[0] == "Wood":
+                        col = 0x00F0F0
+                    else:
+                        col = 0xAB9213
+                if not curr.visited:
+                    col = 0x888888
+                pygame.draw.rect(window, col, pygame.Rect(x * 2 + 10, y * 2 + 10, 2, 2))
+
+        # Player draw
                 # Only draw tiles if visible
                 if -VISIBLE_BLOCKS_HORZ // 2 < i < VISIBLE_BLOCKS_HORZ // 2 and\
                    -VISIBLE_BLOCKS_VERT // 2 < j < VISIBLE_BLOCKS_VERT // 2:
-                    pygame.draw.rect(screen, col if world_grid.nodes[x][y].visited else 0x666666,
+                    pygame.draw.rect(window, col if world_grid.nodes[x][y].visited else 0x666666,
                                      pygame.Rect(center_x - plr_x, center_y - plr_y, block_size, block_size))
 
         for i in range(-MM_SIZE_HORZ, MM_SIZE_HORZ):
@@ -162,7 +176,7 @@ while game_running:
                 col = worldgen.colorMap[world_grid.nodes[x][y].biome]
 
                 # Draw Minimap, which has double the view distance as the regular viewport
-                pygame.draw.rect(screen, col,
+                pygame.draw.rect(window, col,
                                  pygame.Rect((x + MM_OFFSET_X - plr_x // block_size) * MM_ZOOM,
                                              (y + MM_OFFSET_Y - plr_y // block_size) * MM_ZOOM, MM_ZOOM,
                                              MM_ZOOM))
