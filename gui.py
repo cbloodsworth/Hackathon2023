@@ -1,27 +1,38 @@
 import pygame_interface as ui
 
-DEFAULT_SIZE = [100, 100]
-DEFAULT_POS = [0, 0]
-DEFAULT_COLOR = ui.get_color(255, 255, 255, 255)
-DEFAULT_TEXT = "Default Text"
-DEFAULT_FONT = ui.get_font("monospace", 20)
+from grid import *
+
+# Fonts
 
 # GUI
 gui_manager = ui.UI()  # Initialize UI manager
 
-# Box
-box = ui.Box()
-box.pos = DEFAULT_POS
-box.size = DEFAULT_SIZE
-box.color = DEFAULT_COLOR
-gui_manager.objects["Box 1"] = box
+# Start Game Button
+start_game_btn = ui.Textbox()
+start_game_btn.pos = screen_center
+start_game_btn.size = [300, 100]
+start_game_btn.text = "Begin Your Journey"
+gui_manager.buttons["start_game_btn"] = start_game_btn
 
-# Text Button
-text_button = ui.Textbox(DEFAULT_FONT)
-text_button.pos = DEFAULT_POS
-text_button.size = DEFAULT_SIZE
-text_button.text = DEFAULT_TEXT
-text_button.color = DEFAULT_COLOR
-gui_manager.objects["Text Button 1"] = text_button
+# Alert Text Box
 
+alert_box = ui.Textbox()
+alert_box.pos = [860, 150]
+alert_box.size = [200, 120]
+alert_box.enabled = False
+gui_manager.objects["alert_box"] = alert_box
 
+# Backpack Button
+backpack_btn = ui.Textbox()
+backpack_btn.pos = [900, 550]
+backpack_btn.size = [120, 120]
+backpack_btn.text = "Backpack"
+backpack_btn.enabled = False
+gui_manager.buttons["backpack_btn"] = backpack_btn
+
+# Backpack Inventory
+backpack_inventory = ui.Box()
+backpack_inventory.pos = screen_center
+backpack_inventory.size = [500, 500]
+backpack_inventory.enabled = False
+gui_manager.objects["backpack_inventory"] = backpack_inventory
